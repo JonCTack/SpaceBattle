@@ -7,6 +7,9 @@ class Ship {
     shootShip(target){
         if(Math.random() < this.accuracy){
             target.hull -= this.firepower;
+            console.log("a strike!")
+        } else {
+            console.log("a miss.")
         }
     }
 };
@@ -32,64 +35,152 @@ enemyFleet.newEnemy()
 //USS ship and 6 enemies made
 let ussShipHull = document.querySelector("#USS_Ship #USS_Hull")
 ussShipHull.innerText = ussShip.hull
-let enemyFleetContain = document.querySelectorAll(".enemy .enemy_hull")
-for (let i = 0;i < enemyFleetContain.length; i++){
-    enemyFleetContain[i].innerText = enemyFleet.fleet[i].hull
+let enemyFleetHulls = document.querySelectorAll(".enemy .enemy_hull")
+let enemyFleetImgSrcArray = document.querySelectorAll(".enemy img")
+for (let i = 0;i < enemyFleetHulls.length; i++){
+    enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
 }
 //This displays the USS hull and each enemy's hull
-const startBattle = () => {
-    let gameWon = true
-    let retreat = false
-    let enemy = enemyFleet.fleet
-    //this is for shortening the following
-    for (let i = 0; i < enemy.length; i++){
-        if(ussShip.hull < 1){
-            break
-        }
-        while(enemy[i].hull > 0){
-            let response = window.prompt("would you like to continue? type no to stop", "yes")
-            //defaulting yes is to help the player understand the default action, but they can type anything as long as it isn't no
-            if (response == null){
-                //this is to catch pressing the cancel button instead of submitting
-            }
+
+//The following startBattle function had the game run in loops which didn't allow html to update, but it technically runs the game, just with no real feedback beyond possible console prompts.
+// const startBattle = () => {
+//     let gameWon = true
+//     let retreat = false
+//     let enemy = enemyFleet.fleet
+//    //this is for shortening the following
+//     for (let i = 0; i < enemy.length; i++){
+//         if(ussShip.hull < 1){
+//             break
+//         }
+//         while(enemy[i].hull > 0){
+//             let response = window.prompt("would you like to continue? type no to stop", "yes")
+//             //defaulting yes is to help the player understand the default action, but they can type anything as long as it isn't no
+//             if (response == null){
+//                 //this is to catch pressing the cancel button instead of submitting
+//             }
         
-            else if (response.toLowerCase() == ("no")){
-               console.log("retreating")
-                retreat = true
-                break
-            }
-            console.log("shooting enemy")
-            ussShip.shootShip(enemy[i])
-            for (let i = 0;i < enemyFleetContain.length; i++){
-                enemyFleetContain[i].innerText = enemyFleet.fleet[i].hull
-                if (+enemyFleetContain[i].innerText < 0){
-                    enemyFleetContain[i].innerText = 0
-                    //if the hull is less than 0, it displays as 0
-                }
-            }
-                //this updates the health of the enemy ships
-            if (enemy[i].hull < 1){
-                break
-            }
+//             else if (response.toLowerCase() == ("no")){
+//                console.log("retreating")
+//                 retreat = true
+//                 break
+//             }
+//             console.log("shooting enemy")
+//             ussShip.shootShip(enemy[i])
+//             for (let i = 0;i < enemyFleetHulls.length; i++){
+//                 enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
+//                 if (+enemyFleetHulls[i].innerText < 0){
+//                     enemyFleetHulls[i].innerText = 0
+//                     //if the hull is less than 0, it displays as 0
+//                 }
+//             }
+//                 //this updates the health of the enemy ships
+//             if (enemy[i].hull < 1){
+//                 break
+//             }
+//             enemy[i].shootShip(ussShip)
+//             ussShipHull.innerText = ussShip.hull
+//                 //this updates the health of the USS Ship
+//             if (ussShip.hull < 1){
+//                 gameWon = false;
+//                 break
+//             }
+//         }
+//         if (gameWon == false || retreat == true){
+//             break
+//         }
+//     }
+//     if (gameWon == false || retreat == true){
+//         console.log("game lost")
+//     } else {
+//         console.log("game won!")
+//     }
+
+// }
+const startBattle = () => {
+    if (gameWon == (true || false)){
+        gameWon = undefined
+        winScreen.className="hidden"
+        loseScreen.className="hidden"
+        ussShip.hull = 20;
+        ussShipHull.innerText = ussShip.hull;
+        enemyFleet.fleet.length=0;
+        enemyFleet.newEnemy();
+        enemyFleet.newEnemy();
+        enemyFleet.newEnemy();
+        enemyFleet.newEnemy();
+        enemyFleet.newEnemy();
+        enemyFleet.newEnemy();
+        for (let i = 0;i < enemyFleetHulls.length; i++){
+            enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
+            enemyFleetImgSrcArray[i].src = "./images/enemy_ship.png"
+        };
+    }
+    gameButton.className = "hidden";
+    shootButton.className = "";
+    runButton.className = "";
+    console.clear()
+}
+let i = 0;
+const shootBattle = () => {
+    let enemy = enemyFleet.fleet;
+    if(ussShip.hull < 1){
+        gameWon = false
+    }
+    console.log("shooting enemy ship")
+    if (i >= enemy.length){
+        i = 0
+    }
+    ussShip.shootShip(enemy[i])
+    for (let i = 0;i < enemyFleetHulls.length; i++){
+        enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
+     if (+enemyFleetHulls[i].innerText < 0){
+        enemyFleetHulls[i].innerText = 0
+        //if the hull is less than 0, it displays as 0
+        }
+    }
+    //this updates the health of the enemy ships
+    if (enemy[i].hull < 1){
+        enemyFleetImgSrcArray[i].src = "./images/enemy_ship_dead.png"
+        i++
+        if (i >= enemy.length){
+            gameWon = true
+        }
+        } else {
+            console.log("enemy is shooting")
             enemy[i].shootShip(ussShip)
             ussShipHull.innerText = ussShip.hull
                 //this updates the health of the USS Ship
             if (ussShip.hull < 1){
                 gameWon = false;
-                break
             }
         }
-        if (gameWon == false || retreat == true){
-            break
-        }
+    if (gameWon == true){
+        winScreen.className="";
+        gameButton.className = "";
+        shootButton.className = "hidden";
+        runButton.className = "hidden";
+    } else if (gameWon == false){
+        loseScreen.className="";
+        gameButton.className = "";
+        shootButton.className = "hidden";
+        runButton.className = "hidden";
     }
-    if (gameWon == false || retreat == true){
-        console.log("game lost")
-    } else {
-        console.log("game won!")
-    }
-
 }
 
+const runFromBattle = () => {
+    gameWon = false
+    loseScreen.className="";
+    gameButton.className = "";
+    shootButton.className = "hidden";
+    runButton.className = "hidden";
+}
+
+let gameWon = undefined;
 let gameButton = document.getElementById("start")
+let shootButton = document.getElementById("shoot")
+let runButton = document.getElementById("retreat")
+let winScreen = document.getElementById("victory")
+let loseScreen = document.getElementById("defeat")
 gameButton.addEventListener("click", function(){startBattle()});
+shootButton.addEventListener("click", function(){shootBattle()});
+runButton.addEventListener("click", function(){runFromBattle()});

@@ -22,3 +22,6 @@ body {
     'main botleft botmid botright';
     gap:5px;
 }
+.hidden {
+    display:none;
+}
