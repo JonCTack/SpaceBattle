@@ -1,5 +1,6 @@
 body {
     background-color: gray;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 #USS_Ship{grid-area: main;
 }
@@ -15,13 +16,27 @@ body {
 }
 #enemy6{grid-area: botright;
 }
+#you-stat-contain{
+    grid-area: stat1;
+}
+#they-stat-contain{
+    grid-area: stat2;
+}
+#gamestate{
+    grid-area: gamestate;
+}
 #grid-contain{
     display: grid;
     grid-template-areas:
     'main topleft topmid topright'
-    'main botleft botmid botright';
+    'main botleft botmid botright'
+    'stat1 stat2 gamestate x';
     gap:5px;
 }
 .hidden {
     display:none;
+}
+button{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    grid-area: button;
 }

@@ -7,10 +7,13 @@ class Ship {
     shootShip(target){
         if(Math.random() < this.accuracy){
             target.hull -= this.firepower;
-            console.log("a strike!")
+            console.log(`a strike for ${this.firepower}`)
+            return this.firepower
         } else {
             console.log("a miss.")
+            return "no"
         }
+        
     }
 };
 class EnemyFleet{
@@ -97,13 +100,18 @@ for (let i = 0;i < enemyFleetHulls.length; i++){
 
 // }
 const startBattle = () => {
-    if (gameWon == (true || false)){
+    if (gameWon == true||gameWon == false){
+        //this checks if a game  has been played and resets all values
         gameWon = undefined
         winScreen.className="hidden"
         loseScreen.className="hidden"
+        theyShooterScreen.className = "hidden";
+        theyStatScreen.className = "hidden";
+        youShooterScreen.className = "hidden";
+        youStatScreen.className = "hidden";
         ussShip.hull = 20;
         ussShipHull.innerText = ussShip.hull;
-        enemyFleet.fleet.length=0;
+        enemyFleet.fleet=[];
         enemyFleet.newEnemy();
         enemyFleet.newEnemy();
         enemyFleet.newEnemy();
@@ -122,15 +130,21 @@ const startBattle = () => {
 }
 let i = 0;
 const shootBattle = () => {
+    runButton.className = "hidden";
+    theyShooterScreen.className = "hidden";
+    theyStatScreen.className = "hidden";
     let enemy = enemyFleet.fleet;
     if(ussShip.hull < 1){
         gameWon = false
     }
     console.log("shooting enemy ship")
+    youShooterScreen.className=""
+    youShooterScreen.innerText="shooting enemy ship"
     if (i >= enemy.length){
         i = 0
     }
-    ussShip.shootShip(enemy[i])
+    youStatScreen.className=""
+    youStatScreen.innerText = ussShip.shootShip(enemy[i]) + " damage dealt";
     for (let i = 0;i < enemyFleetHulls.length; i++){
         enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
      if (+enemyFleetHulls[i].innerText < 0){
@@ -142,12 +156,16 @@ const shootBattle = () => {
     if (enemy[i].hull < 1){
         enemyFleetImgSrcArray[i].src = "./images/enemy_ship_dead.png"
         i++
+        runButton.className = "";
         if (i >= enemy.length){
             gameWon = true
         }
         } else {
             console.log("enemy is shooting")
-            enemy[i].shootShip(ussShip)
+            theyShooterScreen.className = "";
+            theyStatScreen.className = "";
+            theyShooterScreen.innerText="enemy is shooting"
+            theyStatScreen.innerText = enemy[i].shootShip(ussShip) + " damage taken";
             ussShipHull.innerText = ussShip.hull
                 //this updates the health of the USS Ship
             if (ussShip.hull < 1){
@@ -174,13 +192,18 @@ const runFromBattle = () => {
     shootButton.className = "hidden";
     runButton.className = "hidden";
 }
-
+//With all the toggling of the class "hidden" I thought I'd make some kind of command to cover all cases but because it would essentially end up as toggleHidden(element) everywhere instead, I decided to leave it as is
 let gameWon = undefined;
 let gameButton = document.getElementById("start")
 let shootButton = document.getElementById("shoot")
 let runButton = document.getElementById("retreat")
 let winScreen = document.getElementById("victory")
 let loseScreen = document.getElementById("defeat")
+let youStatScreen = document.getElementById("you-status")
+let youShooterScreen = document.getElementById("you-shoot")
+let theyStatScreen = document.getElementById("they-status")
+let theyShooterScreen = document.getElementById("they-shoot")
 gameButton.addEventListener("click", function(){startBattle()});
 shootButton.addEventListener("click", function(){shootBattle()});
 runButton.addEventListener("click", function(){runFromBattle()});
+//12_16 to do: flexbox enemies, have point system, buy off points, maybe boss, maybe make pretty
