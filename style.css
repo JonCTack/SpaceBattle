@@ -1,3 +1,24 @@
 body {
     background-color: gray;
 }
+#USS_Ship{grid-area: main;
+}
+#enemy1{grid-area: topleft;
+}
+#enemy2{grid-area: topmid;
+}
+#enemy3{grid-area: topright;
+}
+#enemy4{grid-area: botleft;
+}
+#enemy5{grid-area: botmid;
+}
+#enemy6{grid-area: botright;
+}
+#grid-contain{
+    display: grid;
+    grid-template-areas:
+    'main topleft topmid topright'
+    'main botleft botmid botright';
+    gap:5px;
+}
