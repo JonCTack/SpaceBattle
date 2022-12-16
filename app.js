@@ -96,9 +96,7 @@ const startBattle = () => {
     if(gamePoints > 4 ){
      missileButton.className = "";
     }
-    if(gamePoints == 0){
-        ussPoints.innerText = gamePoints
-    }
+    ussPoints.innerText = gamePoints
     console.clear()
     console.log(gamePoints)
 }
@@ -115,7 +113,7 @@ const shootBattle = () => {
     }
     console.log("shooting enemy ship")
     youShooterScreen.className=""
-    youShooterScreen.innerText="shooting enemy ship:"
+    youShooterScreen.innerText="Shooting enemy ship with laser..."
     if (i >= enemy.length){
         i = 0
         //in the case of a game restart after a win, this ensures that you aren't targeting the first ship
@@ -139,7 +137,7 @@ const shootBattle = () => {
             console.log("enemy is shooting")
             theyShooterScreen.className = "";
             theyStatScreen.className = "";
-            theyShooterScreen.innerText="enemy is shooting:";
+            theyShooterScreen.innerText="Enemy is shooting...";
             theyStatScreen.innerText = enemy[i].shootShip(ussShip) + " damage taken";
             ussShipHull.innerText = ussShip.hull;
                 //this updates the health of the USS Ship
@@ -182,7 +180,7 @@ const missileBattle = () => {
     }
     console.log("shooting missile at enemy ship")
     youShooterScreen.className=""
-    youShooterScreen.innerText="shooting enemy ship"
+    youShooterScreen.innerText="Shooting enemy ship with missile..."
     if (i >= enemy.length){
         i = 0
         //in the case of a game restart after a win, this ensures that you aren't targeting the first ship
@@ -208,7 +206,7 @@ const missileBattle = () => {
             console.log("enemy is shooting")
             theyShooterScreen.className = "";
             theyStatScreen.className = "";
-            theyShooterScreen.innerText="enemy is shooting";
+            theyShooterScreen.innerText="Enemy is shooting...";
             theyStatScreen.innerText = enemy[i].shootShip(ussShip) + " damage taken";
             ussShipHull.innerText = ussShip.hull;
                 //this updates the health of the USS Ship
@@ -243,7 +241,7 @@ const missileBattle = () => {
 }
 
 const runFromBattle = () => {
-    if(confirm("You want to retreat?")){
+    if(confirm("Are you sure you want to retreat? You will instantly go to the defeat screen.")){
     gameWon = false
     loseScreen.className="";
     gameButton.className = "";
@@ -251,6 +249,7 @@ const runFromBattle = () => {
     runButton.className = "hidden";
     missileButton.className = "hidden";
     gamePoints = 0;
+    i = 0;
     }
 }
 //With all the toggling of the class "hidden" I thought I'd make some kind of command to cover all cases but because it would essentially end up as toggleHidden(element) everywhere instead, I decided to leave it as is
