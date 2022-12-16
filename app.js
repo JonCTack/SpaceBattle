@@ -60,60 +60,6 @@ for (let i = 0;i < enemyFleetHulls.length; i++){
 }
 //This displays the USS hull and each enemy's hull
 
-//The following startBattle function had the game run in loops which didn't allow html to update, but it technically runs the game, just with no real feedback beyond possible console prompts.
-// const startBattle = () => {
-//     let gameWon = true
-//     let retreat = false
-//     let enemy = enemyFleet.fleet
-//    //this is for shortening the following
-//     for (let i = 0; i < enemy.length; i++){
-//         if(ussShip.hull < 1){
-//             break
-//         }
-//         while(enemy[i].hull > 0){
-//             let response = window.prompt("would you like to continue? type no to stop", "yes")
-//             //defaulting yes is to help the player understand the default action, but they can type anything as long as it isn't no
-//             if (response == null){
-//                 //this is to catch pressing the cancel button instead of submitting
-//             }
-        
-//             else if (response.toLowerCase() == ("no")){
-//                console.log("retreating")
-//                 retreat = true
-//                 break
-//             }
-//             console.log("shooting enemy")
-//             ussShip.shootShip(enemy[i])
-//             for (let i = 0;i < enemyFleetHulls.length; i++){
-//                 enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
-//                 if (+enemyFleetHulls[i].innerText < 0){
-//                     enemyFleetHulls[i].innerText = 0
-//                     //if the hull is less than 0, it displays as 0
-//                 }
-//             }
-//                 //this updates the health of the enemy ships
-//             if (enemy[i].hull < 1){
-//                 break
-//             }
-//             enemy[i].shootShip(ussShip)
-//             ussShipHull.innerText = ussShip.hull
-//                 //this updates the health of the USS Ship
-//             if (ussShip.hull < 1){
-//                 gameWon = false;
-//                 break
-//             }
-//         }
-//         if (gameWon == false || retreat == true){
-//             break
-//         }
-//     }
-//     if (gameWon == false || retreat == true){
-//         console.log("game lost")
-//     } else {
-//         console.log("game won!")
-//     }
-
-// }
 let gamePoints = 0;
 const startBattle = () => {
     if (gameWon == true||gameWon == false){
@@ -144,6 +90,9 @@ const startBattle = () => {
     runButton.className = "";
     if(gamePoints > 5 ){
      missileButton.className = "";
+    }
+    if(gamePoints == 0){
+        ussPoints.innerText = gamePoints
     }
     console.clear()
     console.log(gamePoints)
@@ -240,6 +189,7 @@ const missileBattle = () => {
     youStatScreen.className=""
     youStatScreen.innerText = ussShip.missileShip(enemy[i]) + " damage dealt";
     gamePoints -= 5
+    ussPoints.innerText = gamePoints
     for (let i = 0;i < enemyFleetHulls.length; i++){
         enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
      if (+enemyFleetHulls[i].innerText < 0){
@@ -301,6 +251,8 @@ const runFromBattle = () => {
     gameButton.className = "";
     shootButton.className = "hidden";
     runButton.className = "hidden";
+    missileButton.className = "hidden";
+    gamePoints = 0;
 }
 //With all the toggling of the class "hidden" I thought I'd make some kind of command to cover all cases but because it would essentially end up as toggleHidden(element) everywhere instead, I decided to leave it as is
 let gameWon = undefined;
