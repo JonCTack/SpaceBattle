@@ -11,7 +11,7 @@ class Ship {
             return this.firepower
         } else {
             console.log("a miss.")
-            return "no"
+            return 0
         }
         //the returns allow us to call the method in a string, allowing us to dynamically access the firepower of enemy ships for the status screens
         
@@ -25,7 +25,7 @@ class Ship {
                 return missileDamage
             } else {
                 console.log("a miss.")
-                return "no"
+                return 0
             }
         }
     }
@@ -62,7 +62,7 @@ for (let i = 0;i < enemyFleetHulls.length; i++){
 //This displays the USS hull and each enemy's hull
 if(confirm("Space Battle! 6 alien ships have arrived above earth and you must defend it!\
  Get started with the start game button and try to survive. The longer you go, the more points you get! \
- One on kill and one on round completion. You can also use 5 points to shoot a missile that will deal double damage and is more likely to hit!"
+ One on kill and one on round completion. You can also use 5 points to shoot a missile that will deal double damage, more likely to hit and if you miss only your target shoots!"
  )){}
  //This simply explains the game, has no other use
 let gamePoints = 0;
@@ -137,8 +137,14 @@ const shootBattle = () => {
             console.log("enemy is shooting")
             theyShooterScreen.className = "";
             theyStatScreen.className = "";
-            theyShooterScreen.innerText="Enemy is shooting...";
-            theyStatScreen.innerText = enemy[i].shootShip(ussShip) + " damage taken";
+            theyShooterScreen.innerText="Enemies are shooting...";
+            hullBefore = ussShip.hull
+            enemy.forEach(el => {
+                    if(el.hull > 0 && Math.random() > .6){el.shootShip(ussShip)
+                    } else {console.log("a miss.")}
+                })
+            theyStatScreen.innerText = (hullBefore - ussShip.hull) + " damage taken";
+            //this has all ships potentially shoot and then logs the damage difference, or, how much was taken
             ussShipHull.innerText = ussShip.hull;
                 //this updates the health of the USS Ship
             if (ussShip.hull < 1){
@@ -253,6 +259,7 @@ const runFromBattle = () => {
     }
 }
 //With all the toggling of the class "hidden" I thought I'd make some kind of command to cover all cases but because it would essentially end up as toggleHidden(element) everywhere instead, I decided to leave it as is
+//I also had some thought of making a create ships command that would allow random, varied input but I've had issues getting the flexibility of it to not only work here is js but reflect well in the html
 let gameWon = undefined;
 let gameButton = document.getElementById("start")
 let shootButton = document.getElementById("shoot")
@@ -268,4 +275,3 @@ gameButton.addEventListener("click", function(){startBattle()});
 shootButton.addEventListener("click", function(){shootBattle()});
 missileButton.addEventListener("click", function(){missileBattle()});
 runButton.addEventListener("click", function(){runFromBattle()});
-//12_16 to do: maybe boss
