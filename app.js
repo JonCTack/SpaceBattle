@@ -17,11 +17,12 @@ class Ship {
         
     }
     missileShip(target){
-        if (gamePoints>5){
+        if (gamePoints>4){
             if(Math.random() < (this.accuracy)*1.3){
                 target.hull -= (this.firepower)*2;
-                console.log(`a missile strike for ${this.firepower*2}`)
-                return this.firepower
+                let missileDamage = (this.firepower)*2
+                console.log(`a missile strike for ${missileDamage}`)
+                return missileDamage
             } else {
                 console.log("a miss.")
                 return "no"
@@ -59,7 +60,11 @@ for (let i = 0;i < enemyFleetHulls.length; i++){
     enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
 }
 //This displays the USS hull and each enemy's hull
-
+if(confirm("Space Battle! 6 alien ships have arrived above earth and you must defend it!\
+ Get started with the start game button and try to survive. The longer you go, the more points you get! \
+ One on kill and one on round completion. You can also use 5 points to shoot a missile that will deal double damage and is more likely to hit!"
+ )){}
+ //This simply explains the game, has no other use
 let gamePoints = 0;
 const startBattle = () => {
     if (gameWon == true||gameWon == false){
@@ -88,7 +93,7 @@ const startBattle = () => {
     gameButton.className = "hidden";
     shootButton.className = "";
     runButton.className = "";
-    if(gamePoints > 5 ){
+    if(gamePoints > 4 ){
      missileButton.className = "";
     }
     if(gamePoints == 0){
@@ -110,7 +115,7 @@ const shootBattle = () => {
     }
     console.log("shooting enemy ship")
     youShooterScreen.className=""
-    youShooterScreen.innerText="shooting enemy ship"
+    youShooterScreen.innerText="shooting enemy ship:"
     if (i >= enemy.length){
         i = 0
         //in the case of a game restart after a win, this ensures that you aren't targeting the first ship
@@ -119,10 +124,6 @@ const shootBattle = () => {
     youStatScreen.innerText = ussShip.shootShip(enemy[i]) + " damage dealt";
     for (let i = 0;i < enemyFleetHulls.length; i++){
         enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
-     if (+enemyFleetHulls[i].innerText < 0){
-        enemyFleetHulls[i].innerText = 0
-        //if the hull is less than 0, it displays as 0
-        }
     }
     //this updates the health of the enemy ships
     if (enemy[i].hull < 1){
@@ -138,7 +139,7 @@ const shootBattle = () => {
             console.log("enemy is shooting")
             theyShooterScreen.className = "";
             theyStatScreen.className = "";
-            theyShooterScreen.innerText="enemy is shooting";
+            theyShooterScreen.innerText="enemy is shooting:";
             theyStatScreen.innerText = enemy[i].shootShip(ussShip) + " damage taken";
             ussShipHull.innerText = ussShip.hull;
                 //this updates the health of the USS Ship
@@ -147,7 +148,7 @@ const shootBattle = () => {
                 i = 0
             }
         }
-     if(gamePoints > 5 ){
+     if(gamePoints > 4 ){
             missileButton.className = "";
     }
     if (gameWon == true){
@@ -192,10 +193,6 @@ const missileBattle = () => {
     ussPoints.innerText = gamePoints
     for (let i = 0;i < enemyFleetHulls.length; i++){
         enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
-     if (+enemyFleetHulls[i].innerText < 0){
-        enemyFleetHulls[i].innerText = 0
-        //if the hull is less than 0, it displays as 0
-        }
     }
     //this updates the health of the enemy ships
     if (enemy[i].hull < 1){
@@ -220,7 +217,7 @@ const missileBattle = () => {
                 i = 0
             }
         }
-     if(gamePoints > 5 ){
+     if(gamePoints > 4 ){
             missileButton.className = "";
     }
     if(gamePoints < 5 ){
@@ -246,6 +243,7 @@ const missileBattle = () => {
 }
 
 const runFromBattle = () => {
+    if(confirm("You want to retreat?")){
     gameWon = false
     loseScreen.className="";
     gameButton.className = "";
@@ -253,6 +251,7 @@ const runFromBattle = () => {
     runButton.className = "hidden";
     missileButton.className = "hidden";
     gamePoints = 0;
+    }
 }
 //With all the toggling of the class "hidden" I thought I'd make some kind of command to cover all cases but because it would essentially end up as toggleHidden(element) everywhere instead, I decided to leave it as is
 let gameWon = undefined;
@@ -270,4 +269,4 @@ gameButton.addEventListener("click", function(){startBattle()});
 shootButton.addEventListener("click", function(){shootBattle()});
 missileButton.addEventListener("click", function(){missileBattle()});
 runButton.addEventListener("click", function(){runFromBattle()});
-//12_16 to do: flexbox enemies, have point system, buy off points, maybe boss, maybe make pretty
+//12_16 to do: maybe boss
