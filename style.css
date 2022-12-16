@@ -1,42 +1,62 @@
 body {
     background-color: gray;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
+    width: 100vw;
+    height: 100vh;
 }
 #USS_Ship{grid-area: main;
+
 }
-#enemy1{grid-area: topleft;
+#enemy1{
 }
-#enemy2{grid-area: topmid;
+#enemy2{
 }
-#enemy3{grid-area: topright;
+#enemy3{
 }
-#enemy4{grid-area: botleft;
+#enemy4{
 }
-#enemy5{grid-area: botmid;
+#enemy5{
 }
-#enemy6{grid-area: botright;
+#enemy6{
+}
+#top{
+    grid-area:top;
+    display: flex;
+}
+#bot{
+    grid-area:bot;
+    display: flex;
 }
 #you-stat-contain{
     grid-area: stat1;
+    display: inline;
 }
 #they-stat-contain{
     grid-area: stat2;
+    display: inline;
 }
 #gamestate{
     grid-area: gamestate;
+    display: inline;
 }
 #grid-contain{
     display: grid;
     grid-template-areas:
-    'main topleft topmid topright'
-    'main botleft botmid botright'
-    'stat1 stat2 gamestate x';
+    'main top top top'
+    'main bot bot bot'
+    'button . . .'
+    'stat1 stat2 gamestate gamestate';
     gap:5px;
 }
 .hidden {
     display:none;
 }
-button{
+#buttons{
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     grid-area: button;
+    display: flex;
+    width: 5vw;
+}
+button{
+    display: inline;
 }
