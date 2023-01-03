@@ -14,7 +14,6 @@ class Ship {
             return 0
         }
         //the returns allow us to call the method in a string, allowing us to dynamically access the firepower of enemy ships for the status screens
-        
     }
     missileShip(target){
         if (gamePoints>4){
@@ -103,6 +102,7 @@ const startBattle = () => {
     console.log(gamePoints)
 }
 let i = 0;
+let damageDealt = undefined
 const shootBattle = () => {
     runButton.className = "hidden";
     theyShooterScreen.className = "hidden";
@@ -125,7 +125,13 @@ const shootBattle = () => {
         //in the case of a game restart after a win, this ensures that you aren't targeting the first ship
     }
     youStatScreen.className=""
-    youStatScreen.innerText = ussShip.shootShip(enemy[i]) + " damage dealt";
+    damageDealt = ussShip.shootShip(enemy[i])
+    if (damageDealt > 0){
+        enemyFleetImgSrcArray[i].style = "animation-name: damaged; animation-duration: .1s;"
+    } else {
+        enemyFleetImgSrcArray[i].style = ""
+    }
+    youStatScreen.innerText = damageDealt + " damage dealt";
     for (let i = 0;i < enemyFleetHulls.length; i++){
         enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
     }
@@ -155,7 +161,13 @@ const shootBattle = () => {
                     if(el.hull > 0 && Math.random() > .6){el.shootShip(ussShip)
                     } else {console.log("a miss.")}
                 })
-            theyStatScreen.innerText = (hullBefore - ussShip.hull) + " damage taken";
+            damageDealt = hullBefore - ussShip.hull
+            theyStatScreen.innerText = damageDealt + " damage taken";
+            if (damageDealt > 0){
+                ussShipImg.style = "animation-name: damaged; animation-duration: .1s;"
+            } else {
+                ussShipImg.style = ""
+            }
             //this has all ships potentially shoot and then logs the damage difference, or, how much was taken
             ussShipHull.innerText = ussShip.hull;
                 //this updates the health of the USS Ship
@@ -212,7 +224,13 @@ const missileBattle = () => {
         //in the case of a game restart after a win, this ensures that you aren't targeting the first ship
     }
     youStatScreen.className=""
-    youStatScreen.innerText = ussShip.missileShip(enemy[i]) + " damage dealt";
+    damageDealt = ussShip.missileShip(enemy[i])
+    if (damageDealt > 0){
+        enemyFleetImgSrcArray[i].style = "animation-name: damaged; animation-duration: .1s;"
+    } else {
+        enemyFleetImgSrcArray[i].style = ""
+    }
+    youStatScreen.innerText = damageDealt + " damage dealt";
     gamePoints -= 5
     ussPoints.innerText = gamePoints
     for (let i = 0;i < enemyFleetHulls.length; i++){
@@ -239,7 +257,13 @@ const missileBattle = () => {
             if(soundPlay == true){
                 enemyLaserSound.load();
                 enemyLaserSound.play();}
-            theyStatScreen.innerText = enemy[i].shootShip(ussShip) + " damage taken";
+            damageDealt = enemy[i].shootShip(ussShip)
+            theyStatScreen.innerText = damageDealt + " damage taken";
+            if (damageDealt > 0){
+                ussShipImg.style = "animation-name: damaged; animation-duration: .1s;"
+            } else {
+                ussShipImg.style = ""
+            }
             ussShipHull.innerText = ussShip.hull;
                 //this updates the health of the USS Ship
             if (ussShip.hull < 1){
@@ -293,9 +317,11 @@ const soundToggle = () => {
     if (soundPlay == true){
         soundPlay = false;
         soundButton.innerText = "Sound Off"
+        soundButton.style = "background-color: gray"
     } else {
         soundPlay = true;
         soundButton.innerText = "Sound On"
+        soundButton.style = "background-color: lightgray"
     }
 }
 //With all the toggling of the class "hidden" I thought I'd make some kind of command to cover all cases but because it would essentially end up as toggleHidden(element) everywhere instead, I decided to leave it as is
