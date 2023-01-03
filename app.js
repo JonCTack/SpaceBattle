@@ -112,6 +112,7 @@ const shootBattle = () => {
         //this fixes bugs in edges cases such as ensuring if we lost we start at ship one next game and we can't continue the game if we lost our health
     }
     console.log("shooting enemy ship")
+    laserSound.play();
     youShooterScreen.className=""
     youShooterScreen.innerText="Shooting enemy ship with laser..."
     if (i >= enemy.length){
@@ -135,6 +136,7 @@ const shootBattle = () => {
         }
         } else {
             console.log("enemy is shooting")
+            enemyLaserSound.play();
             theyShooterScreen.className = "";
             theyStatScreen.className = "";
             theyShooterScreen.innerText="Enemies are shooting...";
@@ -271,6 +273,9 @@ let youStatScreen = document.getElementById("you-status")
 let youShooterScreen = document.getElementById("you-shoot")
 let theyStatScreen = document.getElementById("they-status")
 let theyShooterScreen = document.getElementById("they-shoot")
+//The following allow me to play audio embedded in the html
+let laserSound = document.getElementById("laserSound")
+let enemyLaserSound = document.getElementById("enemyLaserSound")
 gameButton.addEventListener("click", function(){startBattle()});
 shootButton.addEventListener("click", function(){shootBattle()});
 missileButton.addEventListener("click", function(){missileBattle()});
