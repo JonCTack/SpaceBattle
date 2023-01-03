@@ -89,6 +89,7 @@ const startBattle = () => {
         for (let i = 0;i < enemyFleetHulls.length; i++){
             enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
             enemyFleetImgSrcArray[i].src = "./images/enemy_ship.png"
+            enemyFleetImgSrcArray[i].style = ""
         };
     }
     gameButton.className = "hidden";
@@ -104,6 +105,7 @@ const startBattle = () => {
 let i = 0;
 let damageDealt = undefined
 const shootBattle = () => {
+    ussShipImg.style = ""
     runButton.className = "hidden";
     theyShooterScreen.className = "hidden";
     theyStatScreen.className = "hidden";
@@ -203,6 +205,7 @@ const shootBattle = () => {
 }
 //this is the same function but it shoots missiles instead
 const missileBattle = () => {
+    ussShipImg.style = ""
     runButton.className = "hidden";
     theyShooterScreen.className = "hidden";
     theyStatScreen.className = "hidden";
