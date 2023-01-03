@@ -14,12 +14,12 @@ img {
 #USS_Ship{grid-area: main;
 }
 #top{
-    grid-area:top;
+    grid-area: top;
     display: flex;
     justify-content: space-around;
 }
 #bot{
-    grid-area:bot;
+    grid-area: bot;
     display: flex;
     justify-content: space-around;
 }

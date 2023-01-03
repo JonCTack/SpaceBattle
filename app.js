@@ -115,7 +115,9 @@ const shootBattle = () => {
         //this fixes bugs in edges cases such as ensuring if we lost we start at ship one next game and we can't continue the game if we lost our health
     }
     console.log("shooting enemy ship")
-    laserSound.play();
+    if(soundPlay == true){
+        laserSound.load();
+        laserSound.play();}
     youShooterScreen.className=""
     youShooterScreen.innerText="Shooting enemy ship with laser..."
     if (i >= enemy.length){
@@ -130,7 +132,9 @@ const shootBattle = () => {
     //this updates the health of the enemy ships
     if (enemy[i].hull < 1){
         enemyFleetImgSrcArray[i].src = "./images/enemy_ship_dead.png"
-        destroyedSound.play();
+        if(soundPlay == true){
+            destroyedSound.load();
+            destroyedSound.play();}
         i++;
         gamePoints++;
         ussPoints.innerText = gamePoints;
@@ -139,11 +143,13 @@ const shootBattle = () => {
             gameWon = true;
         }
         } else {
-            console.log("enemy is shooting")
-            enemyLaserSound.play();
+            console.log("all enemies are shooting")
+            if(soundPlay == true){
+                enemyLaserSound.load();
+                enemyLaserSound.play();}
             theyShooterScreen.className = "";
             theyStatScreen.className = "";
-            theyShooterScreen.innerText="Enemies are shooting...";
+            theyShooterScreen.innerText="All enemies are shooting...";
             hullBefore = ussShip.hull
             enemy.forEach(el => {
                     if(el.hull > 0 && Math.random() > .6){el.shootShip(ussShip)
@@ -156,7 +162,9 @@ const shootBattle = () => {
             if (ussShip.hull < 1){
                 ussShipImg.src = "./images/USS_Ship_dead.png"
                 gameWon = false;
-                destroyedSound.play();
+                if(soundPlay == true){
+                    destroyedSound.load();
+                    destroyedSound.play();}
                 i = 0
             }
         }
@@ -196,7 +204,9 @@ const missileBattle = () => {
     console.log("shooting missile at enemy ship")
     youShooterScreen.className="";
     youShooterScreen.innerText="Shooting enemy ship with missile...";
-    missileSound.play();
+    if(soundPlay == true){
+        missileSound.load();
+        missileSound.play();}
     if (i >= enemy.length){
         i = 0
         //in the case of a game restart after a win, this ensures that you aren't targeting the first ship
@@ -211,7 +221,9 @@ const missileBattle = () => {
     //this updates the health of the enemy ships
     if (enemy[i].hull < 1){
         enemyFleetImgSrcArray[i].src = "./images/enemy_ship_dead.png"
-        destroyedSound.play();
+        if(soundPlay == true){
+            destroyedSound.load();
+            destroyedSound.play();}
         i++;
         gamePoints++;
         ussPoints.innerText = gamePoints;
@@ -220,18 +232,22 @@ const missileBattle = () => {
             gameWon = true;
         }
         } else {
-            console.log("enemy is shooting")
+            console.log("one enemy is shooting")
             theyShooterScreen.className = "";
             theyStatScreen.className = "";
-            theyShooterScreen.innerText="Enemy is shooting...";
-            enemyLaserSound.play();
+            theyShooterScreen.innerText="Targeted enemy is shooting...";
+            if(soundPlay == true){
+                enemyLaserSound.load();
+                enemyLaserSound.play();}
             theyStatScreen.innerText = enemy[i].shootShip(ussShip) + " damage taken";
             ussShipHull.innerText = ussShip.hull;
                 //this updates the health of the USS Ship
             if (ussShip.hull < 1){
                 ussShipImg.src = "./images/USS_Ship_dead.png"
                 gameWon = false;
-                destroyedSound.play();
+                if(soundPlay == true){
+                    destroyedSound.load();
+                    destroyedSound.play();}
                 i = 0
             }
         }
@@ -272,20 +288,35 @@ const runFromBattle = () => {
     i = 0;
     }
 }
+
+const soundToggle = () => {
+    if (soundPlay == true){
+        soundPlay = false;
+        soundButton.innerText = "Sound Off"
+    } else {
+        soundPlay = true;
+        soundButton.innerText = "Sound On"
+    }
+}
 //With all the toggling of the class "hidden" I thought I'd make some kind of command to cover all cases but because it would essentially end up as toggleHidden(element) everywhere instead, I decided to leave it as is
-//I also had some thought of making a create ships command that would allow random, varied input but I've had issues getting the flexibility of it to not only work here is js but reflect well in the html
+//I also had some thought of making a create ships command that would allow random, varied input but I've had issues getting the flexibility of it to not only work here in js but reflect well in the html/css
+//I could have made a shoot function that took the firing type instead of essentially copy pasting the code for laser and lightly modifying it for missile. A lesson for future projects even if it probably would only save me something like 30 lines of code
 let gameWon = undefined;
+let soundPlay = true;
+//these are the clickable buttons in the html
 let gameButton = document.getElementById("start")
 let shootButton = document.getElementById("shoot")
 let missileButton = document.getElementById("missile")
 let runButton = document.getElementById("retreat")
+let soundButton = document.getElementById("soundToggle")
+//these are divs I put information in to inform the player of what is happening
 let winScreen = document.getElementById("victory")
 let loseScreen = document.getElementById("defeat")
 let youStatScreen = document.getElementById("you-status")
 let youShooterScreen = document.getElementById("you-shoot")
 let theyStatScreen = document.getElementById("they-status")
 let theyShooterScreen = document.getElementById("they-shoot")
-//The following allow me to play audio embedded in the html
+//The following allow me to play audio embedded in the html that both inform and sound cool
 let laserSound = document.getElementById("laserSound")
 let enemyLaserSound = document.getElementById("enemyLaserSound")
 let missileSound = document.getElementById("missileSound")
@@ -294,3 +325,4 @@ gameButton.addEventListener("click", function(){startBattle()});
 shootButton.addEventListener("click", function(){shootBattle()});
 missileButton.addEventListener("click", function(){missileBattle()});
 runButton.addEventListener("click", function(){runFromBattle()});
+soundButton.addEventListener("click", function(){soundToggle()})
