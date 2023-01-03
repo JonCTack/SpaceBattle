@@ -53,6 +53,7 @@ enemyFleet.newEnemy()
 let ussShipHull = document.querySelector("#USS_Ship #USS_Hull")
 ussShipHull.innerText = ussShip.hull
 let ussPoints = document.querySelector("#gamePoints")
+let ussShipImg = document.querySelector("#USS_Ship img")
 
 let enemyFleetHulls = document.querySelectorAll(".enemy .enemy_hull")
 let enemyFleetImgSrcArray = document.querySelectorAll(".enemy img")
@@ -85,6 +86,7 @@ const startBattle = () => {
         enemyFleet.newEnemy();
         enemyFleet.newEnemy();
         enemyFleet.newEnemy();
+        ussShipImg.src = "./images/USS_Ship.png"
         for (let i = 0;i < enemyFleetHulls.length; i++){
             enemyFleetHulls[i].innerText = enemyFleet.fleet[i].hull
             enemyFleetImgSrcArray[i].src = "./images/enemy_ship.png"
@@ -107,6 +109,7 @@ const shootBattle = () => {
     theyStatScreen.className = "hidden";
     let enemy = enemyFleet.fleet;
     if(ussShip.hull < 1){
+        ussShipImg.src = "./images/USS_Ship_dead.png"
         gameWon = false
         i = 0
         //this fixes bugs in edges cases such as ensuring if we lost we start at ship one next game and we can't continue the game if we lost our health
@@ -127,6 +130,7 @@ const shootBattle = () => {
     //this updates the health of the enemy ships
     if (enemy[i].hull < 1){
         enemyFleetImgSrcArray[i].src = "./images/enemy_ship_dead.png"
+        destroyedSound.play();
         i++;
         gamePoints++;
         ussPoints.innerText = gamePoints;
@@ -150,7 +154,9 @@ const shootBattle = () => {
             ussShipHull.innerText = ussShip.hull;
                 //this updates the health of the USS Ship
             if (ussShip.hull < 1){
+                ussShipImg.src = "./images/USS_Ship_dead.png"
                 gameWon = false;
+                destroyedSound.play();
                 i = 0
             }
         }
@@ -182,13 +188,15 @@ const missileBattle = () => {
     theyStatScreen.className = "hidden";
     let enemy = enemyFleet.fleet;
     if(ussShip.hull < 1){
+        ussShipImg.src = "./images/USS_Ship_dead.png"
         gameWon = false
         i = 0
         //this fixes bugs in edges cases such as ensuring if we lost we start at ship one next game and we can't continue the game if we lost our health
     }
     console.log("shooting missile at enemy ship")
-    youShooterScreen.className=""
-    youShooterScreen.innerText="Shooting enemy ship with missile..."
+    youShooterScreen.className="";
+    youShooterScreen.innerText="Shooting enemy ship with missile...";
+    missileSound.play();
     if (i >= enemy.length){
         i = 0
         //in the case of a game restart after a win, this ensures that you aren't targeting the first ship
@@ -203,6 +211,7 @@ const missileBattle = () => {
     //this updates the health of the enemy ships
     if (enemy[i].hull < 1){
         enemyFleetImgSrcArray[i].src = "./images/enemy_ship_dead.png"
+        destroyedSound.play();
         i++;
         gamePoints++;
         ussPoints.innerText = gamePoints;
@@ -215,11 +224,14 @@ const missileBattle = () => {
             theyShooterScreen.className = "";
             theyStatScreen.className = "";
             theyShooterScreen.innerText="Enemy is shooting...";
+            enemyLaserSound.play();
             theyStatScreen.innerText = enemy[i].shootShip(ussShip) + " damage taken";
             ussShipHull.innerText = ussShip.hull;
                 //this updates the health of the USS Ship
             if (ussShip.hull < 1){
+                ussShipImg.src = "./images/USS_Ship_dead.png"
                 gameWon = false;
+                destroyedSound.play();
                 i = 0
             }
         }
@@ -276,6 +288,8 @@ let theyShooterScreen = document.getElementById("they-shoot")
 //The following allow me to play audio embedded in the html
 let laserSound = document.getElementById("laserSound")
 let enemyLaserSound = document.getElementById("enemyLaserSound")
+let missileSound = document.getElementById("missileSound")
+let destroyedSound = document.getElementById("deathSound")
 gameButton.addEventListener("click", function(){startBattle()});
 shootButton.addEventListener("click", function(){shootBattle()});
 missileButton.addEventListener("click", function(){missileBattle()});
